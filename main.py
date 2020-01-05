@@ -36,6 +36,13 @@ def oneWay():
     departure_input = str(input("Укажите город отправления "))
     destination_input = str(input("Укажите город назначения "))
     departure_date_input = str(input("Укажите дату отправления "))
+    TALLINN_ID = '17028'
+    PARNU_ID = '8723'
+    if departure_input == 'parnu':
+        link = ('https://www.tpilet.ee/webapi/et/journeys/search?departureStop=parnu&destinationStop=tallinn&departureDate=' + departure_date_input + '&returnDate=&price=-1&duration=-1&includeConnections=false&departureBusStopId=' + PARNU_ID +'&destinationBusStopId=' + TALLINN_ID)
+    else:
+        link = ('https://www.tpilet.ee/webapi/et/journeys/search?departureStop=tallinn&destinationStop=parnu&departureDate=' + departure_date_input + '&returnDate=&price=-1&duration=-1&includeConnections=false&departureBusStopId=' + TALLINN_ID +'&destinationBusStopId=' + PARNU_ID)
+
     period_time_input = str(input("Укажите промежуток времени отправления"))
     print("Показать вам ->")
     choose = {
@@ -47,7 +54,7 @@ def oneWay():
     while True:
         input_ = input(": ")
         if input_ == '1':
-            cheapestTrip()     
+            cheapestTrip(link)     
         elif input_ == '2':
             roundTrip()
         else:
@@ -61,7 +68,7 @@ def roundTrip():
     return_date_input = str(input("Укажите дату обратного отправления "))
     set_options(departure_input,destination_input,departure_date_input,return_date_input,returningTrip='1')
 
-def cheapestTrip():
-    ticketsData('https://www.tpilet.ee/webapi/et/journeys/search?departureStop=tallinn&destinationStop=parnu&departureDate=2020-01-10&returnDate=&price=-1&duration=-1&includeConnections=false&departureBusStopId=17028&destinationBusStopId=8723')
+def cheapestTrip(link):
+    ticketsData(link)
 
 main()
