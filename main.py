@@ -1,7 +1,6 @@
 from selenium import webdriver
 import time
 from recursive_json import extract_values
-from selenium import webdriver
 import requests
 import re
 from termcolor import colored
