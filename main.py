@@ -1,7 +1,6 @@
 from selenium import webdriver
 import time
 from recursive_json import extract_values
-from selenium import webdriver
 import requests
 import re
 from termcolor import colored
@@ -29,7 +28,7 @@ def main():
 def options(departureDate,departure='tallinn',destination='parnu',returningTrip='0'):
     link = ('https://www.tpilet.ee/travel?departureStop=' + departure + '&destinationStop=' + destination + '&departureDate=' + departureDate + '&returnDate=' + departureDate + '&returningTrip=' + returningTrip + '&price=-1&duration=-1')
     browser.get(link) 
-    time.sleep(20)
+    time.sleep(5)
 
 
 def get_journeys():
