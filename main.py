@@ -73,10 +73,7 @@ def get_journeys():
 
     times = browser.execute_script(js_times)
     company = browser.execute_script(js_company)
-    ticket = browser.execute_script(js_tickets)
-    seat = browser.execute_script(js_seats)
     
-
     TALLINN_ID = '17028'
     PARNU_ID = '8723'
 
@@ -102,19 +99,19 @@ def get_journeys():
     
 
     for key in times_dict and company_dict and full_dict and sale_dict:
-        print(key, '--->>>', times_dict[key], '   ', company[key], '    ПОЛНАЯ ЦЕНА',fullPrice[key],'    СО СКИДКОЙ',salePrice[key],)  
-
+        print(key, '--->>>', times_dict[key], '   ', company[key], '    ПОЛНАЯ ЦЕНА',fullPrice[key],'    СО СКИДКОЙ',salePrice[key],)
     num = int(input())
-    num+-1
+    
     """link to get json web-api"""
 
     linkk = ('https://www.tpilet.ee/webapi/et/trips/prices?tripId='+ str(tripId[num])+ '&departureRouteStopId='+str(DEP_ID[num])+'&destinationRouteStopId='+str(DEST_ID[num]))
     rr = requests.get(linkk)
 
+    num+-1
     time.sleep(3)
     q = browser.execute_script("document.getElementsByClassName('OxitbZN0S38kKLBZlAssO')[" + str(num) +"].click()")
-    time.sleep(2)
-
+    time.sleep(3)
+    ticket = browser.execute_script(js_tickets)
     q = [re.sub(r'\n', ' ', i) for i in ticket]
     newtest = [x[:-1] for x in q] 
     #print(newtest)
@@ -127,7 +124,7 @@ def get_journeys():
 
     q = browser.execute_script("document.getElementsByClassName('_3mbZTemfn3cnxwKkLHZs-m')[" + str(inp) +"].click()")
     time.sleep(3)
-    
+    seat = browser.execute_script(js_seats)
     w = [re.sub(r'\n', ' ', i) for i in seat]
     #print(w)
 
