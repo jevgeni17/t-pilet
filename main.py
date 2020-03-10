@@ -4,14 +4,17 @@ from recursive_json import extract_values
 import requests
 import re
 from termcolor import colored
+import colorama
+colorama.init()
+
 
 class Journey: 
 
     def __init__(self):
-        self.__browser = webdriver.Chrome('/Users/Zeka/Downloads/chromedriver')
+        self.__browser = webdriver.Chrome('chromedriver')
         self.__departure = 'tallinn'
         self.__destination = 'parnu'
-        self.date = None
+        self.date = input('Type date'+ '\n') # format example '2020-03-02' year/month/day
         self.__returningTrip = '0' 
         self.__route = None
         self.__ticket = None
@@ -20,38 +23,45 @@ class Journey:
         self.__PARNU_ID = '8723'
 
     def link(self):
-        self.date = input('Type date'+ '\n')
         link = ('https://www.tpilet.ee/travel?departureStop=' + self.__departure + '&destinationStop=' + self.__destination + '&departureDate=' + self.date + '&returnDate=' + self.date + '&returningTrip=' + self.__returningTrip + '&price=-1&duration=-1')
         self.__browser.get(link)
         time.sleep(3)
     
     def getRoutes(self):
         js_times="""
-        var times = document.getElementsByClassName('vqA6QljR2KNt8yw9PHk9C');
-        let time = [];
-        for (var i = 0; i < times.length; i++){time.push( 
-        times[i].innerText);console.log(time);} return time;
+            var times = document.getElementsByClassName('vqA6QljR2KNt8yw9PHk9C');
+            let time = [];
+            for (var i = 0; i < times.length; i++){
+                time.push(times[i].innerText);
+                console.log(time);
+            } return time;
         """
 
         js_company="""
-        var company = document.getElementsByClassName('lvCBxuihqm3iUoMcebtd4');
-        let companys = [];
-        for (var i = 0; i < company.length; i++){companys.push( 
-        company[i].innerText);console.log(companys);} return companys;
+            var company = document.getElementsByClassName('lvCBxuihqm3iUoMcebtd4');
+            let companys = [];
+            for (var i = 0; i < company.length; i++){
+                companys.push(company[i].innerText);
+                console.log(companys);
+            } return companys;
         """
         
         self.__js_tickets="""
-        var ticket = document.getElementsByClassName('_3TJaMCIiSE5gyvUGhXPJ_f');
-        let tickets = [];
-        for (var i = 0; i < ticket.length; i++){tickets.push( 
-        ticket[i].innerText);console.log(tickets);} return tickets;
+            var ticket = document.getElementsByClassName('_3TJaMCIiSE5gyvUGhXPJ_f');
+            let tickets = [];
+            for (var i = 0; i < ticket.length; i++){
+                tickets.push(ticket[i].innerText);
+                console.log(tickets);
+            } return tickets;
         """
 
         self.__js_seats="""
-        var seat = document.getElementsByClassName('_1bELoiN2P2KjAtnIfRarX-');
-        let seats = [];
-        for (var i = 0; i < seat.length; i++){seats.push( 
-        seat[i].innerText);console.log(seats);} return seats;
+            var seat = document.getElementsByClassName('_1bELoiN2P2KjAtnIfRarX-');
+            let seats = [];
+            for (var i = 0; i < seat.length; i++){
+                seats.push(seat[i].innerText);
+                console.log(seats);
+            } return seats;
         """
 
         """Scrap some data from tpilet """
@@ -66,7 +76,7 @@ class Journey:
 
         """Scrap some data from json web-api"""
 
-        fullPrice = extract_values(r.json(), 'FullPrice')
+        fullPrice = extract_values(r.json(), 'FullPrice') # from recursive_json import extract_values
         salePrice = extract_values(r.json(), 'CampaignPrice')
         self.__tripId = extract_values(r.json(), 'TripId')
         self.__DEP_ID = extract_values(r.json(), 'DepartureRouteStopId')
@@ -81,7 +91,7 @@ class Journey:
         
 
         for key in times_dict and company_dict and full_dict and sale_dict:
-            print(key, '--->>>', times_dict[key], '   ', company[key], '    ПОЛНАЯ ЦЕНА',fullPrice[key],'    СО СКИДКОЙ',salePrice[key],)
+            print(key, '--->>>', times_dict[key], '   ', company[key], '    FULL PRICE',fullPrice[key],'    WITH DISCOUNT',salePrice[key],)
         
 
     def getTickets(self):
